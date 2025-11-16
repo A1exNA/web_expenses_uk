@@ -1,8 +1,8 @@
 <?php
 $title = 'Главная';
-require_once '../../src/temlates/header.php';
+require_once '../../src/templates/header.php';
 ?>
 
 <?php
-require_once '../../src/temlates/footer.php';
+require_once '../../src/templates/footer.php';
 ?>

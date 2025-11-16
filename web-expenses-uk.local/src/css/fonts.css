@@ -1,0 +1,16 @@
+/* ----- Стили fonts -----*/
+
+.h1 {
+    font-size: 200% !important;
+    font-weight: 400 !important;
+}
+
+.font__main {
+    font-size: 100%;
+    color: rgba(255, 255, 255, 0.8);
+
+    font-family: "Rubik", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 300;
+    font-style: normal;
+}
