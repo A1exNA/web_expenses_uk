@@ -1,10 +1,12 @@
 <?php
 
 /* ----- CSS соединение файла ----- */
-function mergeCssFiles() {
+function mergeCssFiles()
+{
     $files = [
         '../../src/css/general.css',
         '../../src/css/fonts.css',
+        '../../src/css/database.css',
         '../../src/css/header.css',
         '../../src/css/main.css',
         '../../src/css/footer.css'

@@ -4,13 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <title><?= $title ?></title>
+
     <?php
-    require_once '../../src/functions/css_functions.php';
+    require_once '../../src/css/css_functions.php';
     $variable_array = mergeCssFiles();
     $needWrite = $variable_array[0];
     $outputFile = $variable_array[1];
     $style_css = $variable_array[2];
+
+    require_once '../../src/database/db_functions.php';
     ?>
+
     <link rel="stylesheet" href="../css/style.css">
 </head>
 
@@ -19,6 +23,7 @@
         <div class="h1">УК Тверьжилфонд</div>
     </header>
     <main>
+        <div class="title h1"><?= $title ?></div>
         <?php
         if ($needWrite) {
             file_put_contents($outputFile, $style_css);

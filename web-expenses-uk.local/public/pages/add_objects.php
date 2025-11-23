@@ -3,7 +3,7 @@ $title = 'Добавить дом';
 require_once '../../src/templates/header.php';
 ?>
 
-<div class="inputBlock">
+<form class="inputBlock">
     <div class="inputLine">
         <span class="inputText">id</span>
         <input class="input font__input" type="text" name="id" id="id" placeholder="id" autocomplete="off">
@@ -31,7 +31,7 @@ require_once '../../src/templates/header.php';
     <div class="inputLine">
         <input class="submit font__input" type="submit" value="Подтвердить" onclick="submitForm()">
     </div>
-</div>
+</form>
 
 <?php
 require_once '../../src/templates/footer.php';

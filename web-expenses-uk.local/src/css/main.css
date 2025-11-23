@@ -7,6 +7,35 @@ main {
     background-color: rgb(110, 110, 110);
 }
 
+.title {
+    padding: 15px 0;
+    text-align: center;
+}
+
+.window {
+    width: 80%;
+    min-height: 50px;
+
+    background-color: rgba(0, 0, 0, 0.5);
+    margin: 15px auto;
+}
+
+.window__navigate {
+    display: flex;
+    justify-content: left;
+}
+
+.navigate__button {
+    margin-right: 2px;
+    padding: 5px;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.table {
+    width: 80%;
+    margin: 0 auto;
+}
+
 .inputBlock {
     background-color: rgba(0, 0, 0, 0.1);
     padding: 10px;
