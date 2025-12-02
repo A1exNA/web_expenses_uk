@@ -5,13 +5,17 @@ require_once '../../src/templates/header.php';
 
 <a href="index.php">Главная</a>
 
+<?php
+echo <<<HTML
 <div class="window">
     <div class="window__navigate">
-        <a class="navigate__button">Добавить</a>
-        <a class="navigate__button">Изменить</a>
-        <a class="navigate__button">Удалить</a>
+        <a class="navigate__button" onclick="clickNavBtn('Добавить', 2)">Добавить</a>
+        <a class="navigate__button" onclick="clickNavBtn('Изменить', 2)">Изменить</a>
+        <a class="navigate__button" onclick="clickNavBtn('Удалить', 2)">Удалить</a>
     </div>
 </div>
+HTML;
+?>
 
 <div class="table">
     <table>
