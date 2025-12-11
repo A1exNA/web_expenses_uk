@@ -1,5 +1,59 @@
-SQL запрос на добавление дома
+Здравствуйте!
+"Правильный" способ, который я имел в виду и который является стандартом в безопасной разработке, — это использование подготовленных выражений (Prepared Statements).
+В прошлый раз я просто исправил синтаксис вашей конкретной ошибки и добавил базовую обработку ошибок mysqli_error().
+Подготовленные выражения решают две основные проблемы вашего исходного кода:
+Безопасность (Защита от SQL-инъекций): Вы никогда не вставляете переменные извне напрямую в строку SQL-запроса через конкатенацию (. '...' .).
+Надежность: База данных сама обрабатывает типы данных, исключая синтаксические ошибки, связанные с кавычками, апострофами и форматами чисел.
+Вот как ваш код должен выглядеть, если делать его правильно и безопасно, используя mysqli с подготовленными выражениями:
+php
+<?php
 
-INSERT INTO `objects` (`id`, `object_address`, `object_area`, `management_fee`, `current_repair_rate`) VALUES ('0', 'Офис', '0', '0', '0');
+require_once 'connect.php';
 
-INSERT INTO `objects` (`id`, `object_address`, `object_area`, `management_fee`, `current_repair_rate`) VALUES ('1', 'пер. Беляковский, д. 42', '4991.70', '14', '1');
+// ... (Весь ваш код проверки empty($formData), проверки ID остается прежним) ...
+
+// --- ИСПРАВЛЕННЫЙ БЛОК ВСТАВКИ ДАННЫХ ---
+
+// 1. Подготовка запроса: используем знаки '?' как заполнители
+$stmt = mysqli_prepare($connect, "INSERT INTO `objects` 
+    (`id`, `object_address`, `object_area`, `management_fee`, `current_repair_rate`) 
+    VALUES (?, ?, ?, ?, ?)");
+
+if ($stmt === false) {
+    echo json_encode(['status' => 'error', 'message' => 'Ошибка подготовки запроса: ' . mysqli_error($connect)]);
+    exit;
+}
+
+// 2. Привязка параметров: замена '?' на реальные данные
+// Типы данных указываются одной строкой: 
+// 'i' -> integer (целое число для id)
+// 's' -> string (строка для адреса)
+// 'd' -> double (число с плавающей точкой для площади, тарифов)
+mysqli_stmt_bind_param($stmt, 'isddd', 
+    $formData['id'], 
+    $formData['object_address'], 
+    $formData['object_area'], 
+    $formData['management_fee'], 
+    $formData['current_repair_rate']
+);
+
+// 3. Выполнение запроса
+$success = mysqli_stmt_execute($stmt);
+
+if ($success) {
+    echo json_encode(['status' => 'success', 'message'=> 'Данные успешно добавлены', 'submittedData' => $formData]);
+} else {
+    // Получение конкретной ошибки выполнения запроса
+    echo json_encode(['status' => 'error', 'message' => 'Ошибка выполнения запроса: ' . mysqli_stmt_error($stmt)]);
+}
+
+// 4. Закрытие выражения
+mysqli_stmt_close($stmt);
+
+?>
+Используйте код с осторожностью.
+
+Ключевое отличие: мы отправляем шаблон запроса и данные отдельно, а не склеиваем их в одну строку. Это и есть правильный и безопасный подход.
+
+
+

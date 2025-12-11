@@ -51,11 +51,20 @@ th, td {
 }
 
 th {
+    padding: 5px 10px;
     background-color: rgba(0, 255, 255, 0.3);
 }
 
 td {
+    padding-right: 20px;
     background-color: rgba(250, 235, 215, 0.3);
+}
+
+td.database__number {
+    padding-right: 5px;
+    padding-left: 20px;
+    text-align: right;
+    font-family: 'Consolas';
 }/* ----- Стили header -----*/
 
 header {
@@ -103,6 +112,29 @@ main {
     background-color: rgba(255, 255, 255, 0.2);
 
     cursor: pointer;
+}
+
+.window__input {
+    padding: 5px;
+}
+
+.input__block {
+    padding: 5px;
+}
+
+.block__element {
+    padding: 5px 0;
+}
+
+input {
+    width: 500px;
+    padding: 2px;
+}
+
+button {
+    padding: 5px;
+    margin-top: 20px;
+    border-radius: 5px;
 }
 
 .table {

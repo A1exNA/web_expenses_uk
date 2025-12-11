@@ -3,9 +3,18 @@ th, td {
 }
 
 th {
+    padding: 5px 10px;
     background-color: rgba(0, 255, 255, 0.3);
 }
 
 td {
+    padding-right: 20px;
     background-color: rgba(250, 235, 215, 0.3);
+}
+
+td.database__number {
+    padding-right: 5px;
+    padding-left: 20px;
+    text-align: right;
+    font-family: 'Consolas';
 }
