@@ -26,6 +26,7 @@ echo <<<HTML
         <a class="navigate__button" onclick="clickNavBtn('Create', allObjects, allHeaders)">Добавить</a>
         <a class="navigate__button" onclick="clickNavBtn('Change', allObjects, allHeaders)">Изменить</a>
         <a class="navigate__button" onclick="clickNavBtn('Delete', allObjects, allHeaders)">Удалить</a>
+        <a class="navigate__button" onclick="clickNavBtn('Close', allObjects, allHeaders)">Закрыть</a>
     </div>
     <form class="window__input" id="window__input">
     </form>

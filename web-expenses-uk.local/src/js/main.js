@@ -6,10 +6,10 @@ function clickNavBtn(value, database, headers) {
 
     let inputMenu = ``;
 
-    if(value == "Create") {
+    if (value == "Create") {
         let lengthArray = headers.length;
 
-        for(let i = 0; i < lengthArray; i++) {
+        for (let i = 0; i < lengthArray; i++) {
             valName = headers[i].name;
             valName = headerNodeList[i].textContent;
             inputMenu += `
@@ -41,6 +41,7 @@ function clickNavBtn(value, database, headers) {
         windowInput.innerHTML = value;
     } else {
         console.log("Что-то непонятное");
+        windowInput.innerHTML = inputMenu;
     }
 }
 
@@ -56,7 +57,17 @@ function submitFormData(formElement) {
         method: 'POST',
         body: formData,
     })
-    .then(response => {
-        console.log(response.json())
+    .then(respons => {
+        console.log("Status: " , respons.status);
+        console.log("Headers: " , respons.headers);
+
+        return respons.json();
+    })
+    .then(data => {
+        console.log(data);
+
+        if (data.status === 'success') {
+            window.location.reload();
+        }
     })
 }

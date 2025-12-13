@@ -2,7 +2,7 @@
 
 main {
     width: 100%;
-    height: calc(100% - 60px);
+    min-height: calc(100% - 60px);
 
     background-color: rgb(110, 110, 110);
 }
