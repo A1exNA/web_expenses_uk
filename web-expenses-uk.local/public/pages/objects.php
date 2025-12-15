@@ -29,6 +29,17 @@ echo <<<HTML
         <a class="navigate__button" onclick="clickNavBtn('Close', allObjects, allHeaders)">Закрыть</a>
     </div>
     <form class="window__input" id="window__input">
+        <div class="input__block">
+            <div class="block__element">id</div>
+            <div class="block__element">
+                <input class="font__input" list="id_deleted" type="text" name="" placeholder="Введите">
+                <datalist id="id_deleted">
+                    <option value="1">г. Тверь, пер. Беляковский, д. 42
+                    <option value="2">г. Тверь, ул. Веры Бонч-Бруевич, д. 26
+                    <option value="3">г. Тверь, ул. Ефимова, д. 32
+                </datalist>
+            </div>
+        </div>
     </form>
 </div>
 HTML;
@@ -56,7 +67,7 @@ HTML;
                 <td class="database__number">$object[4] ₽</td>
                 <td class="database__number">$object[5]</td>
             </tr>
-        HTML;
+            HTML;
         }
         ?>
     </table>

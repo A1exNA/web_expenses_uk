@@ -34,11 +34,28 @@ function clickNavBtn(value, database, headers) {
         });
     } else if (value == "Change") {
         windowInput.innerHTML = value;
-
-        const lengthArray = database[0].length;
-        console.log(lengthArray);
     } else if (value == "Delete") {
         windowInput.innerHTML = value;
+
+        inputMenu += `
+        <div class="input__block">
+            <div class="block__element">id</div>
+            <div class="block__element">
+                <input class="font__input" list="id_deleted" type="text" name="" placeholder="Введите">
+                <datalist id="id_deleted">
+                    <option value="1">г. Тверь, пер. Беляковский, д. 42
+                    <option value="2">г. Тверь, ул. Веры Бонч-Бруевич, д. 26
+                    <option value="3">г. Тверь, ул. Ефимова, д. 32
+                </datalist>
+            </div>
+        </div>`
+
+        inputMenu += `
+        <div class="input__block">
+            <button class="font__input" type="submit">Удалить данные</button>
+        </div>`;
+
+        windowInput.innerHTML = inputMenu;
     } else {
         console.log("Что-то непонятное");
         windowInput.innerHTML = inputMenu;
