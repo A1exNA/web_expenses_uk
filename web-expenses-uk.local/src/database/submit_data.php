@@ -26,9 +26,14 @@ $stmt = mysqli_prepare($connect, "INSERT INTO `objects`
     VALUES (?, ?, ?, ?, ?);");
 
 if ($stmt === false) {
-    echo json_encode(["status" => "error", "message" => "Ошибка подготовки запроса: ". mysqli_error($connect)]);
+    echo json_encode(["status" => "error", "message" => "Ошибка подготовки запроса: " . mysqli_error($connect)]);
     exit;
 }
+
+
+$formData["object_area"] = str_replace(",",".", $formData["object_area"]);
+$formData["management_fee"] = str_replace(",",".", $formData["management_fee"]);
+$formData["current_repair_rate"] = str_replace(",",".", $formData["current_repair_rate"]);
 
 // Типы данных указываются одной строкой: 
 // 'i' -> integer (целое число для id)
@@ -50,7 +55,6 @@ if ($success) {
 } else {
     echo json_encode(['status' => 'error', 'message' => 'Ошибка выполнения запроса: ' . mysqli_stmt_error($stmt)]);
 }
-
 
 mysqli_stmt_close($stmt);
 
