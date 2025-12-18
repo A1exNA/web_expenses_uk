@@ -16,14 +16,18 @@ $ids = array_column($objects,"id");
 if ($formData['id'] == '') {
     echo json_encode(["status" => "error", "message" => "Пустое поле id"]);
     exit;
-} else if (in_array($formData['id'], $ids)) {
-    echo json_encode(["status" => "error", "message" => "Такое поле id уже есть"]);
+} else if (!in_array($formData['id'], $ids)) {
+    echo json_encode(["status" => "error", "message" => "Такого поля id нет"]);
     exit;
 }
 
-$stmt = mysqli_prepare($connect, "INSERT INTO `objects` 
-    (`id`, `object_address`, `object_area`, `management_fee`, `current_repair_rate`) 
-    VALUES (?, ?, ?, ?, ?);");
+$stmt = mysqli_prepare($connect, "UPDATE `objects` 
+    SET
+        object_address = ?,
+        object_area = ?,
+        management_fee = ?,
+        current_repair_rate = ?
+    WHERE id = ?;");
 
 if ($stmt === false) {
     echo json_encode(["status" => "error", "message" => "Ошибка подготовки запроса: " . mysqli_error($connect)]);
@@ -35,24 +39,20 @@ $formData["object_area"] = str_replace(",",".", $formData["object_area"]);
 $formData["management_fee"] = str_replace(",",".", $formData["management_fee"]);
 $formData["current_repair_rate"] = str_replace(",",".", $formData["current_repair_rate"]);
 
-// Типы данных указываются одной строкой: 
-// 'i' -> integer (целое число для id)
-// 's' -> string (строка для адреса)
-// 'd' -> double (число с плавающей точкой для площади, тарифов)
 $allFormData = [
-    $formData["id"],
     $formData["object_address"],
     $formData["object_area"],
     $formData["management_fee"],
-    $formData["current_repair_rate"]
+    $formData["current_repair_rate"],
+    $formData["id"]
 ];
 
-mysqli_stmt_bind_param($stmt, "isddd", ...$allFormData);
+mysqli_stmt_bind_param($stmt, "sdddi", ...$allFormData);
 
 $success = mysqli_stmt_execute($stmt);
 
 if ($success) {
-    echo json_encode(["status" => "success", "message" => "Объект добавлен", "submittedData" => $formData]);
+    echo json_encode(["status" => "success", "message" => "Объект изменен", "submittedData" => $formData]);
 } else {
     echo json_encode(['status' => 'error', 'message' => 'Ошибка выполнения запроса: ' . mysqli_stmt_error($stmt)]);
 }
