@@ -1,3 +1,35 @@
+// Загрузка бд при открытии страницы
+
+dbList = ['objects', 'expenses', 'users'];
+
+document.addEventListener('DOMContentLoaded', loadData(dbName));
+
+function loadData(dbName) {
+    if (dbList.includes(dbName)) {
+        console.log(dbName);
+
+        const actionUrl = '../../src/database/server.php';
+
+        fetch(actionUrl, {
+            method: 'POST',headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ dbName: dbName })
+        })
+        .then(respons => {
+            console.log(respons);
+
+            return respons.json();
+        })
+        .then(data => {
+            console.log(data['innerHTML']);
+            const form = document.getElementById('db_table');
+            textInnerHTML = data['innerHTML'];
+            form.insertAdjacentHTML('beforeend', textInnerHTML);
+        })
+    }
+}
+
 // Общая функция для взаимодействия с данными
 
 function clickNavBtn(value, database, headers) {

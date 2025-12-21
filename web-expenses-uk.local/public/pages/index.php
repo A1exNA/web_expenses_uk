@@ -1,5 +1,6 @@
 <?php
 $title = 'Главная';
+$db_name = '"index"';
 require_once '../../src/templates/header.php';
 ?>
 

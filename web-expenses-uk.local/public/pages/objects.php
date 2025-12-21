@@ -1,23 +1,10 @@
 <?php
 $title = 'Объекты';
+$db_name = '"objects"';
 require_once '../../src/templates/header.php';
 ?>
 
 <a href="index.php">Главная</a>
-
-<?php
-$objects = mysqli_query($connect, "SELECT * FROM `objects`");
-$headers = mysqli_fetch_fields($objects);
-$objects = mysqli_fetch_all($objects);
-
-$objects_json_string = json_encode($objects);
-$headers_json_string = json_encode($headers);
-?>
-
-<script>
-    const allObjects = <?php echo $objects_json_string; ?>;
-    const allHeaders = <?php echo $headers_json_string; ?>;
-</script>
 
 <?php
 echo <<<HTML
@@ -35,7 +22,7 @@ HTML;
 ?>
 
 <div class="table">
-    <table>
+    <table id="db_table">
         <tr>
             <th>id</th>
             <th>Адрес</th>
@@ -44,21 +31,6 @@ HTML;
             <th>Тариф ТР</th>
             <th>Дата начала обслуживания</th>
         </tr>
-
-        <?php
-        foreach ($objects as $object) {
-            echo <<<HTML
-            <tr>
-                <td class="database__number">$object[0]</td>
-                <td>$object[1]</td>
-                <td class="database__number">$object[2] м²</td>
-                <td class="database__number">$object[3] ₽</td>
-                <td class="database__number">$object[4] ₽</td>
-                <td class="database__number">$object[5]</td>
-            </tr>
-            HTML;
-        }
-        ?>
     </table>
 </div>
 
