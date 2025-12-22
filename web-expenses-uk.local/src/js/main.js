@@ -4,35 +4,77 @@ dbList = ['objects', 'expenses', 'users'];
 
 document.addEventListener('DOMContentLoaded', loadData(dbName));
 
-function loadData(dbName) {
-    if (dbList.includes(dbName)) {
-        console.log(dbName);
 
-        const actionUrl = '../../src/database/server.php';
+// Функция на поиск headers и database
 
-        fetch(actionUrl, {
-            method: 'POST',headers: {
+async function dataSearch(dbName) {
+    if (!dbList.includes(dbName)) {
+        return null;
+    };
+    const actionUrl = '../../src/database/server.php';
+
+    try {
+        const response = await fetch(actionUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'dbData', dbName: dbName })
+        });
+
+        if (!response.ok) {
+            throw new Error(`Ошибка сервера: ${response.status}`);
+        };
+        const data = await response.json();
+        return {
+            headers: data.dbHeaders,
+            database: data.dbData
+        }
+    } catch (error) {
+        console.error('Не удалось загрузить данные: ', error.message);
+    };
+}
+
+// Функция на вывод данных
+
+async function loadData(dbName) {
+    if (!dbList.includes(dbName)) {
+        return null;
+    };
+    const dbData = await dataSearch(dbName);
+    const actionUrl = '../../src/database/server.php';
+
+    console.log(dbData);
+
+    try {
+        const response = await fetch(actionUrl, {
+            method: 'POST',
+            headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ dbName: dbName })
-        })
-        .then(respons => {
-            console.log(respons);
+            body: JSON.stringify({ action: 'loadData', headers: dbData['headers'], database: dbData['database'] })
+        });
 
-            return respons.json();
-        })
-        .then(data => {
-            console.log(data['innerHTML']);
-            const form = document.getElementById('db_table');
-            textInnerHTML = data['innerHTML'];
-            form.insertAdjacentHTML('beforeend', textInnerHTML);
-        })
-    }
+        if (!response.ok) {
+            throw new Error(`Ошибка сервера: ${response.status}`);
+        };
+        const data = await response.json();
+        const form = document.getElementById('db_table');
+        form.insertAdjacentHTML('beforeend', data['innerHTML']);
+    } catch (error) {
+        console.error('Не удалось загрузить данные: ', error.message);
+    };
 }
+
 
 // Общая функция для взаимодействия с данными
 
-function clickNavBtn(value, database, headers) {
+async function clickNavBtn(value, dbName) {
+    const data =  await dataSearch(dbName);
+    console.log(data);
+    headers = data['headers'];
+    database = data['database'];
+    console.log(headers);
+    console.log(database);
+
     const windowInput = document.getElementById('window__input');
     const headerNodeList = document.querySelectorAll('th');
 
@@ -155,7 +197,7 @@ function clickNavBtn(value, database, headers) {
             <option value="${database[i][0]}">${database[i][1]}`
         }
 
-        
+
         inputMenu += `
                 </datalist>
             </div>
