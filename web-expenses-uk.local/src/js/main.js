@@ -79,7 +79,7 @@ async function clickNavBtn(value, dbName) {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ action: value, headers: headers, database: database })
+        body: JSON.stringify({ action: value, headers: headers, database: database, ruHeaders: headerNodeList })
     })
 
     if (!response.ok) {
@@ -99,7 +99,7 @@ async function clickNavBtn(value, dbName) {
             event.preventDefault();
 
             submitFormData(form);
-        };
+        }
     } else if (value == "Change") {
         const inputElement = document.getElementById('input')
 
@@ -119,8 +119,6 @@ async function clickNavBtn(value, dbName) {
                         break;
 
                     } else if (database[j]['id'] == selectedValue) {
-                        console.log(database[j][headers[i]['name']]);
-
                         element.value = database[j][headers[i]['name']];
                         break;
                     }
@@ -136,36 +134,6 @@ async function clickNavBtn(value, dbName) {
             changeFormData(form);
         };
     } else if (value == "Delete") {
-        let lengthArray = database.length;
-
-
-
-        inputMenu += `
-        <div class="input__block">
-            <div class="block__element">id</div>
-            <div class="block__element">
-                <input class="font__input" list="id_deleted" type="text" name="id" placeholder="Введите id" autocomplete="off">
-                <datalist id="id_deleted">`
-
-        for (let i = 0; i < lengthArray; i++) {
-            console.log(database);
-            inputMenu += `
-                <option value="${database[i][0]}">${database[i][1]}`
-        }
-
-
-        inputMenu += `
-                </datalist>
-            </div>
-        </div>`
-
-        inputMenu += `
-        <div class="input__block">
-            <button class="font__input" type="submit">Удалить данные</button>
-        </div>`;
-
-        windowInput.innerHTML = inputMenu;
-
         const form = document.getElementById('window__input');
 
         form.onsubmit = function(event) {
@@ -175,7 +143,7 @@ async function clickNavBtn(value, dbName) {
         };
     } else {
         console.log("Что-то непонятное");
-        windowInput.innerHTML = inputMenu;
+        windowInput.innerHTML = '';
     }
 }
 

@@ -23,7 +23,7 @@ if ($action === 'Create') {
         $innerHTML .= <<< HTML
         <div class='input__block'>
             <div class='block__element'>$header_name</div>
-            <div class='block__element'><input class='font__input' type='text' name='$header_name' value='$value' placeholder='Введите $header_name' autocomplete='off'></div>
+            <div class='block__element'><input class='font__input' id='$header_name' type='text' name='$header_name' value='$value' placeholder='Введите $header_name' autocomplete='off'></div>
         </div>
         HTML;
     };
@@ -75,7 +75,7 @@ if ($action === 'Create') {
         $innerHTML .= <<< HTML
         <div class='input__block'>
             <div class='block__element'>$header_name</div>
-            <div class='block__element'><input class='font__input' type='text' name='$header_name' value='' placeholder='Введите $header_name' autocomplete='off'></div>
+            <div class='block__element'><input class='font__input' id='$header_name' type='text' name='$header_name' value='' placeholder='Введите $header_name' autocomplete='off'></div>
         </div>
         HTML;
     };
@@ -95,13 +95,42 @@ if ($action === 'Create') {
         "innerHTML" => $innerHTML
     ]);
 } else if ($action === 'Delete') {
+    $innerHTML .= <<< HTML
+        <div class="input__block">
+            <div class="block__element">id</div>
+            <div class="block__element">
+                <input class="font__input" id="input" list="id_deleted" type="text" name="id" placeholder="Введите id" autocomplete="off">
+                <datalist id="id_deleted">
+    HTML;
+
+    foreach ($database as $dataB) {
+        $id_data = $dataB['id'];
+        $name_data = $dataB['object_address'];
+        $innerHTML .= <<< HTML
+                <option value='$id_data'>$name_data
+        HTML;
+    }
+
+    $innerHTML .= <<< HTML
+            </datalist>
+        </div>
+    </div>
+    HTML;
+
+    $innerHTML .= <<< HTML
+        <div class="input__block">
+            <button class="font__input" type="submit">Удалить данные</button>
+        </div>
+    HTML;
+
     echo json_encode([
         "status" => "success",
         "message" => "Все хорошо",
         "data" => $data,
         "action" => $action,
         "headers" => $headers,
-        "database" => $database
+        "database" => $database,
+        "innerHTML" => $innerHTML
     ]);
 } else {
     echo json_encode([
