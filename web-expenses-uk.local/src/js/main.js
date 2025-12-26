@@ -71,7 +71,13 @@ async function clickNavBtn(value, dbName) {
     database = dataS['database'];
 
     const windowInput = document.getElementById('window__input');
-    const headerNodeList = document.querySelectorAll('th');
+    const headerHTMLNodeList = document.querySelectorAll('th');
+
+    let headerNodeList = [];
+
+    for (let i = 0; i < headerHTMLNodeList.length; i++) {
+        headerNodeList.push(headerHTMLNodeList[i].textContent);
+    }
 
     const actionUrl = '../../src/database/fetcher.php';
     const response = await fetch (actionUrl, {

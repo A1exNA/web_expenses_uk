@@ -57,12 +57,18 @@ function loadData($data) {
     $db_headers = $data["headers"];
     $db_database = $data["database"];
 
+    $integer_list = ['id', 'object_area', 'management_fee', 'current_repair_rate'];
+
     $innerHTML = '';
 
     foreach ($db_database as $row) {
         $innerHTML .= '<tr>';
         foreach ($db_headers as $header) {
-            $innerHTML .= '<td>' . htmlspecialchars($row[$header['name']]) . '</td>';
+            if (in_array($header['name'], $integer_list, true)) {
+                $innerHTML .= '<td class="database__number">' . htmlspecialchars($row[$header['name']]) . '</td>';
+            } else {
+                $innerHTML .= '<td>' . htmlspecialchars($row[$header['name']]) . '</td>';
+            }
         };
         $innerHTML .= '</tr>';
     };

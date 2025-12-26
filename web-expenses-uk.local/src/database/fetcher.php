@@ -6,12 +6,15 @@ $data = json_decode($json, true);
 $action = $data['action'];
 $headers = $data['headers'];
 $database = $data['database'];
+$ru_headers = $data['ruHeaders'];
 
 $innerHTML = "";
 
 if ($action === 'Create') {
-    foreach ($headers as $header) {
+    foreach ($headers as $index => $header) {
         $header_name = $header['name'];
+        $ru_header_name = $ru_headers[$index];
+
         if ($header_name == 'id') {
             $value = count($database) + 1;
         } else if ($header_name == 'object_address') {
@@ -22,8 +25,8 @@ if ($action === 'Create') {
 
         $innerHTML .= <<< HTML
         <div class='input__block'>
-            <div class='block__element'>$header_name</div>
-            <div class='block__element'><input class='font__input' id='$header_name' type='text' name='$header_name' value='$value' placeholder='Введите $header_name' autocomplete='off'></div>
+            <div class='block__element'>$ru_header_name</div>
+            <div class='block__element'><input class='font__input' id='$header_name' type='text' name='$header_name' value='$value' placeholder='Введите $ru_header_name' autocomplete='off'></div>
         </div>
         HTML;
     };
@@ -40,6 +43,7 @@ if ($action === 'Create') {
         "action" => $action,
         "headers" => $headers,
         "database" => $database,
+        "ruHeaders" => $ru_headers,
         "innerHTML" => $innerHTML
     ]);
 } else if ($action === 'Change') {
@@ -65,8 +69,9 @@ if ($action === 'Create') {
     </div>
     HTML;
 
-    foreach ($headers as $header) {
+    foreach ($headers as $index => $header) {
         $header_name = $header['name'];
+        $ru_header_name = $ru_headers[$index];
 
         if ($header_name == 'id') {
             continue;
@@ -74,8 +79,8 @@ if ($action === 'Create') {
 
         $innerHTML .= <<< HTML
         <div class='input__block'>
-            <div class='block__element'>$header_name</div>
-            <div class='block__element'><input class='font__input' id='$header_name' type='text' name='$header_name' value='' placeholder='Введите $header_name' autocomplete='off'></div>
+            <div class='block__element'>$ru_header_name</div>
+            <div class='block__element'><input class='font__input' id='$header_name' type='text' name='$header_name' value='' placeholder='Введите $ru_header_name' autocomplete='off'></div>
         </div>
         HTML;
     };
@@ -92,6 +97,7 @@ if ($action === 'Create') {
         "action" => $action,
         "headers" => $headers,
         "database" => $database,
+        "ruHeaders" => $ru_headers,
         "innerHTML" => $innerHTML
     ]);
 } else if ($action === 'Delete') {
@@ -130,6 +136,7 @@ if ($action === 'Create') {
         "action" => $action,
         "headers" => $headers,
         "database" => $database,
+        "ruHeaders" => $ru_headers,
         "innerHTML" => $innerHTML
     ]);
 } else {
@@ -139,6 +146,7 @@ if ($action === 'Create') {
         "data" => $data,
         "action" => $action,
         "headers" => $headers,
+        "ruHeaders" => $ru_headers,
         "database" => $database
     ]);
 }
