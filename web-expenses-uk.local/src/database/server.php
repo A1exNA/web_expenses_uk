@@ -11,7 +11,7 @@ if (empty($data)) {
 } else if ($data['action'] == "dbData") {
     dbData($connect, $data);
 } else if ($data['action'] == "loadData") {
-    loadData($data);
+    loadData($data, $types_list);
 }
 
 // Функция на поиск headers и database
@@ -53,18 +53,16 @@ function dbData($connect, $data) {
 
 // Передача на страницу пользователя данных из sql
 
-function loadData($data) {
+function loadData($data, $types_list) {
     $db_headers = $data["headers"];
     $db_database = $data["database"];
-
-    $integer_list = ['id', 'object_area', 'management_fee', 'current_repair_rate'];
 
     $innerHTML = '';
 
     foreach ($db_database as $row) {
         $innerHTML .= '<tr>';
         foreach ($db_headers as $header) {
-            if (in_array($header['name'], $integer_list, true)) {
+            if (in_array($header['name'], $types_list['double'], true)) {
                 $innerHTML .= '<td class="database__number">' . htmlspecialchars($row[$header['name']]) . '</td>';
             } else {
                 $innerHTML .= '<td>' . htmlspecialchars($row[$header['name']]) . '</td>';

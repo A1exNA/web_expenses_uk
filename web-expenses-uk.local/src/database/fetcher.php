@@ -57,7 +57,7 @@ if ($action === 'Create') {
 
     foreach ($database as $dataB) {
         $id_data = $dataB['id'];
-        $name_data = $dataB['object_address'];
+        $name_data = $dataB[$headers[1]['name']];
         $innerHTML .= <<< HTML
                 <option value='$id_data'>$name_data
         HTML;
@@ -111,7 +111,7 @@ if ($action === 'Create') {
 
     foreach ($database as $dataB) {
         $id_data = $dataB['id'];
-        $name_data = $dataB['object_address'];
+        $name_data = $dataB[$headers[1]['name']];
         $innerHTML .= <<< HTML
                 <option value='$id_data'>$name_data
         HTML;

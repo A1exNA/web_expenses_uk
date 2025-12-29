@@ -6,4 +6,9 @@ if (!$connect) {
     die('Error connect to database');
 }
 
+$types_list = [
+    'integer' => ['id'],
+    'double' => ['object_area', 'management_fee', 'current_repair_rate']
+]
+
 ?>

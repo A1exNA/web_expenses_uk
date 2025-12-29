@@ -98,15 +98,38 @@ async function clickNavBtn(value, dbName) {
 
     windowInput.innerHTML = data['innerHTML'];
 
-    if (value == "Create") {
-        const form = document.getElementById('window__input');
+    const form = document.getElementById('window__input');
 
-        form.onsubmit = function(event) {
-            event.preventDefault();
+    form.onsubmit = function(event) {
+        event.preventDefault();
 
-            submitFormData(form);
-        }
-    } else if (value == "Change") {
+        //submitFormData(form);
+        const formData = new FormData(form);
+        console.log('Начало обработки');
+
+        const actionUrl = '../../src/database/data_exchange.php'
+
+        fetch (actionUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ action: value, dbName: dbName, data: Object.fromEntries(formData), database: data })
+        })
+        .then (response => {
+            console.log(response);
+            return response.json();
+        })
+        .then (data => {
+            console.log(data);
+
+            if (data.status === 'success') {
+                window.location.reload();
+            }
+        })
+    }
+
+    if (value == "Change") {
         const inputElement = document.getElementById('input')
 
         inputElement.addEventListener('change', function(event) {
@@ -131,108 +154,8 @@ async function clickNavBtn(value, dbName) {
                 }
             }
         })
-
-        const form = document.getElementById('window__input');
-
-        form.onsubmit = function(event) {
-            event.preventDefault();
-
-            changeFormData(form);
-        };
-    } else if (value == "Delete") {
-        const form = document.getElementById('window__input');
-
-        form.onsubmit = function(event) {
-            event.preventDefault();
-
-            deleteFormData(form);
-        };
-    } else {
+    } else if (!["Create", "Change", "Delete"].includes(value)) {
         console.log("Что-то непонятное");
         windowInput.innerHTML = '';
     }
-}
-
-
-// Функция добавления данных в БД
-
-function submitFormData(formElement) {
-    const formData = new FormData(formElement);
-
-    console.log('Начало обработки')
-
-    const actionUrl = '../../src/database/submit_data.php'
-
-    fetch(actionUrl, {
-        method: 'POST',
-        body: formData,
-    })
-    .then(respons => {
-        console.log("Status: " , respons.status);
-
-        return respons.json();
-    })
-    .then(data => {
-        console.log(data);
-
-        if (data.status === 'success') {
-            window.location.reload();
-        }
-    })
-}
-
-
-// Функция изменения данных в БД
-
-function changeFormData(formElement) {
-    const formData = new FormData(formElement);
-
-    console.log('Начало обработки', formData);
-
-    const actionUrl = '../../src/database/change_data.php'
-
-    fetch(actionUrl, {
-        method: 'POST',
-        body: formData
-    })
-    .then(respons => {
-        console.log("Status: " , respons.status);
-
-        return respons.json();
-    })
-    .then(data => {
-        console.log(data);
-
-        if (data.status === 'success') {
-            window.location.reload();
-        }
-    })
-}
-
-
-// Функция удаления данных в БД
-
-function deleteFormData(formElement) {
-    const formData = new FormData(formElement);
-
-    console.log('Начало обработки', formData.get('id'))
-
-    const actionUrl = '../../src/database/delete_data.php'
-
-    fetch(actionUrl, {
-        method: 'POST',
-        body: formData
-    })
-    .then(respons => {
-        console.log("Status: " , respons.status);
-
-        return respons.json();
-    })
-    .then(data => {
-        console.log(data);
-
-        if (data.status === 'success') {
-            window.location.reload();
-        }
-    })
 }
