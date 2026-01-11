@@ -12,7 +12,7 @@
     $outputFile = $variable_array[1];
     $style_css = $variable_array[2];
 
-    require_once '../../src/database/db_functions.php';
+    require_once '../../src/database/connect.php';
     ?>
 
     <link rel="stylesheet" href="../css/style.css">

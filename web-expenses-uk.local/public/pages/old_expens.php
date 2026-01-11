@@ -1,12 +1,12 @@
 <?php
-$title = 'Пользователи';
-$db_name = '"users"';
+$title = 'Траты';
+$db_name = '"expens"';
 require_once '../../src/templates/header.php';
 ?>
 
 <a href="index.php">Главная</a>
 <a href="objects.php">Объекты</a>
-<a href="expens.php">Траты</a>
+<a href="users.php">Пользователи</a>
 
 <?php
 echo <<<HTML
@@ -27,10 +27,11 @@ HTML;
     <table id="db_table">
         <tr>
             <th>id</th>
-            <th>Имя</th>
-            <th>Должность</th>
-            <th>email</th>
-            <th>Пароль</th>
+            <th>id Чека</th>
+            <th>Текст</th>
+            <th>Цена</th>
+            <th>id Пользователя</th>
+            <th>Дата</th>
         </tr>
     </table>
 </div>

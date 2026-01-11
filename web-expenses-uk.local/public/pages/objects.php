@@ -6,6 +6,7 @@ require_once '../../src/templates/header.php';
 
 <a href="index.php">Главная</a>
 <a href="users.php">Пользователи</a>
+<a href="expens.php">Траты</a>
 
 <?php
 echo <<<HTML

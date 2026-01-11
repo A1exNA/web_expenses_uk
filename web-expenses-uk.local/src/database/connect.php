@@ -7,8 +7,8 @@ if (!$connect) {
 }
 
 $types_list = [
-    'integer' => ['id'],
-    'double' => ['object_area', 'management_fee', 'current_repair_rate']
+    'integer' => ['id', 'check_id'],
+    'double' => ['object_area', 'management_fee', 'current_repair_rate', 'price']
 ]
 
 ?>

@@ -1,45 +1,24 @@
-// Загрузка бд при открытии страницы
+// Общая функция для взаимодействия с данными
 
-dbList = ['objects', 'expenses', 'users'];
+import { searchBtnOld, dbList } from "./btn.js";
+
+async function clickNavBtn(btnName, dbName) {
+    searchBtnOld(btnName, dbName);
+}
+window.clickNavBtn = clickNavBtn;
+
+
+// Загрузка бд при открытии страницы
 
 document.addEventListener('DOMContentLoaded', loadData(dbName));
 
-
-// Функция на поиск headers и database
-
-async function dataSearch(dbName) {
-    if (!dbList.includes(dbName)) {
-        return null;
-    };
-    const actionUrl = '../../src/database/server.php';
-
-    try {
-        const response = await fetch(actionUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ action: 'dbData', dbName: dbName })
-        });
-
-        if (!response.ok) {
-            throw new Error(`Ошибка сервера: ${response.status}`);
-        };
-        const data = await response.json();
-        return {
-            headers: data.dbHeaders,
-            database: data.dbData
-        }
-    } catch (error) {
-        console.error('Не удалось загрузить данные: ', error.message);
-    };
-}
 
 // Функция на вывод данных
 
 async function loadData(dbName) {
     if (!dbList.includes(dbName)) {
         return null;
-    };
-    const dbData = await dataSearch(dbName);
+    }
     const actionUrl = '../../src/database/server.php';
 
     try {
@@ -48,114 +27,17 @@ async function loadData(dbName) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ action: 'loadData', headers: dbData['headers'], database: dbData['database'] })
+            body: JSON.stringify({ action: 'loadData', dbName: dbName })
         });
 
         if (!response.ok) {
             throw new Error(`Ошибка сервера: ${response.status}`);
-        };
+        }
         const data = await response.json();
+        console.log(data);
         const form = document.getElementById('db_table');
         form.insertAdjacentHTML('beforeend', data['innerHTML']);
     } catch (error) {
         console.error('Не удалось загрузить данные: ', error.message);
-    };
-}
-
-
-// Общая функция для взаимодействия с данными
-
-async function clickNavBtn(value, dbName) {
-    const dataS =  await dataSearch(dbName);
-    headers = dataS['headers'];
-    database = dataS['database'];
-
-    const windowInput = document.getElementById('window__input');
-    const headerHTMLNodeList = document.querySelectorAll('th');
-
-    let headerNodeList = [];
-
-    for (let i = 0; i < headerHTMLNodeList.length; i++) {
-        headerNodeList.push(headerHTMLNodeList[i].textContent);
-    }
-
-    const actionUrl = '../../src/database/fetcher.php';
-    const response = await fetch (actionUrl, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ action: value, headers: headers, database: database, ruHeaders: headerNodeList })
-    })
-
-    if (!response.ok) {
-        throw new Error(`Ошибка сервера: ${response.status}`)
-    };
-
-    const data = await response.json();
-
-    console.log(data);
-
-    windowInput.innerHTML = data['innerHTML'];
-
-    const form = document.getElementById('window__input');
-
-    form.onsubmit = function(event) {
-        event.preventDefault();
-
-        //submitFormData(form);
-        const formData = new FormData(form);
-        console.log('Начало обработки');
-
-        const actionUrl = '../../src/database/data_exchange.php'
-
-        fetch (actionUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ action: value, dbName: dbName, data: Object.fromEntries(formData), database: data })
-        })
-        .then (response => {
-            console.log(response);
-            return response.json();
-        })
-        .then (data => {
-            console.log(data);
-
-            if (data.status === 'success') {
-                window.location.reload();
-            }
-        })
-    }
-
-    if (value == "Change") {
-        const inputElement = document.getElementById('input')
-
-        inputElement.addEventListener('change', function(event) {
-            const selectedValue = event.target.value;
-
-            console.log('Введено число', selectedValue);
-            console.log(headers, database);
-
-            for (let i = 1; i < headers.length; i++) {
-                element = document.getElementById(headers[i]['name']);
-
-                for (let j = 0; j < database.length; j++) {
-                    if (!selectedValue) {
-                        console.log('Выберете id');
-                        element.value = '';
-                        break;
-
-                    } else if (database[j]['id'] == selectedValue) {
-                        element.value = database[j][headers[i]['name']];
-                        break;
-                    }
-                }
-            }
-        })
-    } else if (!["Create", "Change", "Delete"].includes(value)) {
-        console.log("Что-то непонятное");
-        windowInput.innerHTML = '';
     }
 }
