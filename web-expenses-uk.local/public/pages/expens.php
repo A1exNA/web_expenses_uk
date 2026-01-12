@@ -28,13 +28,14 @@ HTML;
         <tr>
             <th rowspan="2">id</th>
             <th colspan="2">Объект</th>
-            <th colspan="2">Название</th>
+            <th colspan="3">Название</th>
             <th>Итог</th>
         </tr>
         <tr>
             <th>id</th>
             <th>Текст</th>
             <th>Цена</th>
+            <th>Кол.</th>
             <th>Пользователь</th>
             <th>Дата</th>
         </tr>

@@ -37,30 +37,53 @@ export async function searchBtnOld(btnName, dbName) {
     form.onsubmit = function(event) {
         event.preventDefault();
 
-        //submitFormData(form);
-        const formData = new FormData(form);
+        const formData = new FormData(form, event.submitter);
+
+        const action = formData.get('action');
         console.log('Начало обработки');
+        if (action == 'save') {
+            const actionUrl = '../../src/database/data_exchange.php'
 
-        const actionUrl = '../../src/database/data_exchange.php'
+            fetch (actionUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ action: btnName, dbName: dbName, data: Object.fromEntries(formData), database: data })
+            })
+            .then (response => {
+                console.log(response);
+                return response.json();
+            })
+            .then (data => {
+                console.log(data);
 
-        fetch (actionUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ action: btnName, dbName: dbName, data: Object.fromEntries(formData), database: data })
-        })
-        .then (response => {
-            console.log(response);
-            return response.json();
-        })
-        .then (data => {
-            console.log(data);
+                if (data.status === 'success') {
+                    window.location.reload();
+                }
+            })
+        } else if (action == 'new_expens') {
+            console.log('Добавляем новый элемент товара');
+            console.log(form)
 
-            if (data.status === 'success') {
-                window.location.reload();
+            const buttonBlock = event.submitter.closest('.input__block');
+
+            const blockToCopy = buttonBlock.previousElementSibling;
+            
+            const newNode = blockToCopy.cloneNode(true);const inputs = newNode.querySelectorAll('input');
+            
+            inputs.forEach(input => {
+                input.value = '';
+            });
+            
+            const label = newNode.querySelector('#expens');
+            if (label) {
+                const allItems = form.querySelectorAll('.input__line__id').length + 1;
+                label.textContent = `Товар №${allItems}`;
             }
-        })
+
+            form.insertBefore(newNode, buttonBlock);
+        }
     }
 
     if (btnName == "Change") {

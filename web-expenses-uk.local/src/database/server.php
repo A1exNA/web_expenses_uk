@@ -81,12 +81,13 @@ function loadData($connect, $db_name, $types_list) {
             $rowspan = array_count_values(array_column($expens_data, 'check_id'));
             $rowspan[$cheak['id']] = $rowspan[$cheak['id']] + 1;
             $object = searchId($connect, 'objects', 'object_address', $cheak['object_id']);
-            $sum = number_format(array_sum(array_column($expens_data, 'price')), 2,'.','');
 
             $exp = array_filter($expens_data, fn($item) => $item['check_id'] == $cheak['id']);
+            $sum = number_format(array_sum(array_column($exp, 'price')), 2,'.','');
             $exp_id = array_column($exp, 'id');
             $exp_text = array_column($exp, 'text');
             $exp_price = array_column($exp, 'price');
+            $exp_quantity = array_column($exp, 'quantity');
             $exp_user_id = array_column($exp, 'user_id');
             $exp_date = array_column($exp, 'date');
 
@@ -94,7 +95,7 @@ function loadData($connect, $db_name, $types_list) {
         <tr>
             <td class="database__integer" rowspan="{$rowspan[$cheak['id']]}">{$cheak['id']}</td>
             <td colspan="2">{$object['object_address']}</td>
-            <td colspan="2">{$cheak['text']}</td>
+            <td colspan="3">{$cheak['text']}</td>
             <td class="database__double">{$sum}</td>
         </tr>
         HTML;
@@ -108,6 +109,7 @@ function loadData($connect, $db_name, $types_list) {
             <td class="database__integer td__footer">{$exp_id[$i]}</td>
             <td class="td__footer">{$exp_text[$i]}</td>
             <td class="database__double td__footer">{$exp_price[$i]}</td>
+            <td class="database__double td__footer">{$exp_quantity[$i]}</td>
             <td class="td__footer">{$user_name['user_name']}</td>
             <td class="td__footer">{$exp_date[$i]}</td>
         </tr>

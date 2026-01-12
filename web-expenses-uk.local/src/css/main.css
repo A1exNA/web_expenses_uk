@@ -47,7 +47,27 @@ main {
 
 input {
     width: 500px;
+    margin: 4px 1px;
     padding: 2px;
+}
+
+.input__line__id {
+    width: 50px;
+}
+.input__line__text {
+    width: 300px;
+}
+.input__line__price {
+    width: 150px;
+}
+.input__line__quantity {
+    width: 150px;
+}
+.input__line__users {
+    width: 150px;
+}
+.input__line__date {
+    width: 150px;
 }
 
 button {

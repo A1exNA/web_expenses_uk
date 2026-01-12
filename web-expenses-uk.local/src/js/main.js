@@ -34,7 +34,6 @@ async function loadData(dbName) {
             throw new Error(`Ошибка сервера: ${response.status}`);
         }
         const data = await response.json();
-        console.log(data);
         const form = document.getElementById('db_table');
         form.insertAdjacentHTML('beforeend', data['innerHTML']);
     } catch (error) {
